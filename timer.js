@@ -1,6 +1,3 @@
-import dictOfDates from '/dates.json' assert { type: 'json' };
-
-
 function createCookie(data) {
     document.cookie = 'data=' + JSON.stringify(data)
 }
@@ -32,13 +29,32 @@ function getTime(date) {
     return beautify(timeLeft);
 }
 
+function fetchJSONData() {
+    fetch("./dates.json")
+        .then((res) => {
+            if (!res.ok) {
+                throw new Error
+                    (`HTTP error! Status: ${res.status}`);
+            }
+            return res.json();
+        })
+        .then((data) => {
+            setInterval(main, 1000, data)
+        })
+        .catch((error) =>
+            console.error("Unable to fetch data:", error));
+
+    return ret_data
+}
+
 function addDate(name, date) {
     dictOfDates.set(name, date);
 }
 
-function main() {
-    let temp = ''
-    for (let i = 0; i < dictOfDates.names.length; i++) {
+function main(dictOfDates) {
+    console.log(dictOfDates);
+    let temp = '';
+    for (let i = 0; i < dictOfDates['names'].length; i++) {
         var timeArray = getTime(dictOfDates.dates[i]);
         if (timeArray == 'complete') {
             temp += '<li><h1>' + dictOfDates.names[i] + '</h1><p>' + getTime(dictOfDates.dates[i]) + '</p></li>';
@@ -52,9 +68,8 @@ function main() {
     }
     document.getElementById('lists').innerHTML = temp;
 }
+fetchJSONData();
 
-createCookie(dictOfDates)
-var interval = setInterval(main, 1000);
 
 
 
