@@ -43,8 +43,6 @@ function fetchJSONData() {
         })
         .catch((error) =>
             console.error("Unable to fetch data:", error));
-
-    return ret_data
 }
 
 function addDate(name, date) {
@@ -52,7 +50,6 @@ function addDate(name, date) {
 }
 
 function main(dictOfDates) {
-    console.log(dictOfDates);
     let temp = '';
     for (let i = 0; i < dictOfDates['names'].length; i++) {
         var timeArray = getTime(dictOfDates.dates[i]);
